@@ -75,6 +75,11 @@ def run_parallel(args, envs):
 
     django_port = envs.get("DJANGO_PORT", "8000")
     rsbuild_port = envs.get("RSBUILD_PORT", "3000")
+    host = envs.get("HOST", "127.0.0.1").strip("[]")
+    if not host:
+        raise SystemExit("❌ HOST must not be empty.")
+    url_host = f"[{host}]" if ":" in host else host
+
     try:
         django_port = int(django_port)
         rsbuild_port = int(rsbuild_port)
@@ -87,27 +92,27 @@ def run_parallel(args, envs):
         raise SystemExit("❌ DJANGO_PORT and RSBUILD_PORT must be different.")
 
     if any(
-        arg in ("--port", "--addrport")
-        or arg.startswith(("--port=", "--addrport="))
+        arg in ("--port", "--addrport", "--host")
+        or arg.startswith(("--port=", "--addrport=", "--host="))
         for arg in args
     ):
         raise SystemExit(
-            "❌ Shared --port/--addrport arguments are not supported in parallel mode. "
-            "Use DJANGO_PORT=... and RSBUILD_PORT=... instead."
+            "❌ Shared --port/--addrport/--host arguments are not supported in parallel mode. "
+            "Use HOST=..., DJANGO_PORT=..., and RSBUILD_PORT=... instead."
         )
 
     parallel_envs = envs.copy()
-    parallel_envs.setdefault("RSBUILD_BASE_URL", f"http://localhost:{rsbuild_port}")
+    parallel_envs.setdefault("RSBUILD_BASE_URL", f"http://{url_host}:{rsbuild_port}")
     
     # Target threads to execute tasks concurrently
     ts_thread = threading.Thread(
         target=run_ts,
-        args=(["--port", str(rsbuild_port), *args], parallel_envs, False),
+        args=(["--host", host, "--port", str(rsbuild_port), *args], parallel_envs, False),
         daemon=True,
     )
     py_thread = threading.Thread(
         target=run_py,
-        args=([str(django_port), *args], parallel_envs, False),
+        args=([f"{url_host}:{django_port}", *args], parallel_envs, False),
         daemon=True,
     )
     
@@ -151,9 +156,12 @@ def main():
 
     if task in ("py", "manage", "parallel"):
         envs.setdefault("DJANGO_DEBUG", "true")
+        cors_host = envs.get("HOST", "127.0.0.1").strip("[]") if task == "parallel" else "localhost"
+        if ":" in cors_host:
+            cors_host = f"[{cors_host}]"
         envs.setdefault(
             "DJANGO_CORS_ALLOWED_ORIGINS",
-            f"http://localhost:{envs.get('RSBUILD_PORT', '3000')}",
+            f"http://{cors_host}:{envs.get('RSBUILD_PORT', '3000')}",
         )
 
     if task == "setup":
