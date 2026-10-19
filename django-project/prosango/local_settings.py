@@ -39,3 +39,8 @@ if os.environ.get('DATABASE_NAME'):
 
 CORS_ALLOWED_ORIGINS = env_list('DJANGO_CORS_ALLOWED_ORIGINS', 'http://localhost:3000' if DEBUG else '')
 CORS_ALLOW_CREDENTIALS = env_bool('DJANGO_CORS_ALLOW_CREDENTIALS', False)
+
+# In dev, assets are served by the Rsbuild dev server; the manifest is still used
+RSBUILD_BASE_URL = os.environ.get(
+    'RSBUILD_BASE_URL', 'http://localhost:3000' if DEBUG else '/static'
+)

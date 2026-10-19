@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'prosango',
 ]
 
 MIDDLEWARE = [
@@ -117,6 +118,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# Rsbuild (typescript-frontend) manifest, read in dev and production
+RSBUILD_MANIFEST = BASE_DIR.parent / 'typescript-frontend' / 'dist' / 'manifest.json'
+RSBUILD_BASE_URL = '/static'
+STATICFILES_DIRS = [BASE_DIR.parent / 'typescript-frontend' / 'dist']
 
 
 # Email
