@@ -23,7 +23,7 @@ if SECRET_KEY is None:
         raise ImproperlyConfigured('DJANGO_SECRET_KEY must be set when DEBUG is off')
     SECRET_KEY = 'django-insecure-dev-only-key'
 
-ALLOWED_HOSTS = env_list('DJANGO_ALLOWED_HOSTS')
+ALLOWED_HOSTS = env_list('DJANGO_ALLOWED_HOSTS', '*' if DEBUG else '')
 
 if os.environ.get('DATABASE_NAME'):
     DATABASES = {
