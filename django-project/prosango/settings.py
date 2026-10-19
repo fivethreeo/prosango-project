@@ -119,7 +119,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-# Rsbuild (typescript-frontend) manifest, read in dev and production
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Rsbuild (typescript-frontend) manifest; dev reads it from the frontend dist,
+# production reads the copy collected into STATIC_ROOT (see local_settings.py)
 RSBUILD_MANIFEST = BASE_DIR.parent / 'typescript-frontend' / 'dist' / 'manifest.json'
 RSBUILD_BASE_URL = '/static'
 STATICFILES_DIRS = [BASE_DIR.parent / 'typescript-frontend' / 'dist']

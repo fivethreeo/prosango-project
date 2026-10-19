@@ -44,3 +44,12 @@ CORS_ALLOW_CREDENTIALS = env_bool('DJANGO_CORS_ALLOW_CREDENTIALS', False)
 RSBUILD_BASE_URL = os.environ.get(
     'RSBUILD_BASE_URL', 'http://localhost:3000' if DEBUG else '/static'
 )
+
+# In production the frontend dist is not deployed; collectstatic copies the manifest to STATIC_ROOT
+_static_root = os.environ.get('DJANGO_STATIC_ROOT')
+if _static_root:
+    STATIC_ROOT = _static_root
+if not DEBUG:
+    from pathlib import Path
+
+    RSBUILD_MANIFEST = os.environ.get('RSBUILD_MANIFEST') or Path(STATIC_ROOT) / 'manifest.json'
