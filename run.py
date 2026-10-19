@@ -72,10 +72,44 @@ def run_npm(args, envs, wait=True):
 def run_parallel(args, envs):
     print("🚀 Starting both Python and TypeScript services in parallel...")
     print("💡 Press Ctrl+C at any time to shut down both.\n")
+
+    django_port = envs.get("DJANGO_PORT", "8000")
+    rsbuild_port = envs.get("RSBUILD_PORT", "3000")
+    try:
+        django_port = int(django_port)
+        rsbuild_port = int(rsbuild_port)
+        if not 0 <= django_port <= 65535 or not 0 <= rsbuild_port <= 65535:
+            raise ValueError
+    except ValueError:
+        raise SystemExit("❌ DJANGO_PORT and RSBUILD_PORT must be valid port numbers (0-65535).")
+
+    if django_port == rsbuild_port:
+        raise SystemExit("❌ DJANGO_PORT and RSBUILD_PORT must be different.")
+
+    if any(
+        arg in ("--port", "--addrport")
+        or arg.startswith(("--port=", "--addrport="))
+        for arg in args
+    ):
+        raise SystemExit(
+            "❌ Shared --port/--addrport arguments are not supported in parallel mode. "
+            "Use DJANGO_PORT=... and RSBUILD_PORT=... instead."
+        )
+
+    parallel_envs = envs.copy()
+    parallel_envs.setdefault("RSBUILD_BASE_URL", f"http://localhost:{rsbuild_port}")
     
     # Target threads to execute tasks concurrently
-    ts_thread = threading.Thread(target=run_ts, args=(args, envs, False), daemon=True)
-    py_thread = threading.Thread(target=run_py, args=(args, envs, False), daemon=True)
+    ts_thread = threading.Thread(
+        target=run_ts,
+        args=(["--port", str(rsbuild_port), *args], parallel_envs, False),
+        daemon=True,
+    )
+    py_thread = threading.Thread(
+        target=run_py,
+        args=(["--port", str(django_port), *args], parallel_envs, False),
+        daemon=True,
+    )
     
     ts_thread.start()
     py_thread.start()
@@ -117,7 +151,10 @@ def main():
 
     if task in ("py", "manage", "parallel"):
         envs.setdefault("DJANGO_DEBUG", "true")
-        envs.setdefault("DJANGO_CORS_ALLOWED_ORIGINS", "http://localhost:3000")
+        envs.setdefault(
+            "DJANGO_CORS_ALLOWED_ORIGINS",
+            f"http://localhost:{envs.get('RSBUILD_PORT', '3000')}",
+        )
 
     if task == "setup":
         setup()
