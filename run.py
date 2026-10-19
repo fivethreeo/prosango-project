@@ -9,8 +9,8 @@ import time
 IS_WINDOWS = os.name == 'nt'
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-TS_DIR = os.path.join(ROOT_DIR, "typescript-service")
-PY_DIR = os.path.join(ROOT_DIR, "python-service")
+TS_DIR = os.path.join(ROOT_DIR, "typescript-frontend")
+PY_DIR = os.path.join(ROOT_DIR, "django-project")
 
 if IS_WINDOWS:
     VENV_PYTHON = os.path.join(PY_DIR, ".venv", "Scripts", "python.exe")
@@ -29,7 +29,8 @@ def run_command(cmd, cwd, env_updates=None, wait=True):
         current_env.update(env_updates)
     
     try:
-        proc = subprocess.Popen(cmd, cwd=cwd, env=current_env, shell=True)
+        command = subprocess.list2cmdline(cmd) if IS_WINDOWS else cmd
+        proc = subprocess.Popen(command, cwd=cwd, env=current_env, shell=IS_WINDOWS)
         active_processes.append(proc)
         
         if wait:
@@ -43,23 +44,21 @@ def run_command(cmd, cwd, env_updates=None, wait=True):
 # --- Core Task Commands ---
 def setup():
     print("📦 Installing TypeScript dependencies...")
-    run_command("pnpm install", cwd=TS_DIR)
+    run_command(["npm", "install"], cwd=TS_DIR)
     
     print("\n🐍 Creating Python virtual environment...")
     subprocess.run([sys.executable, "-m", "venv", os.path.join(PY_DIR, ".venv")], check=True)
     
     print("\n📦 Installing Python dependencies inside .venv...")
-    run_command(f'"{VENV_PIP}" install -r requirements.txt', cwd=PY_DIR)
+    run_command([VENV_PIP, "install", "-r", "requirements.txt"], cwd=PY_DIR)
     print("\n✅ Setup complete!")
 
 def run_py(args, envs, wait=True):
-    script_path = os.path.join("src", "main.py")
-    cmd = f'"{VENV_PYTHON}" {script_path} {" ".join(args)}'
+    cmd = [VENV_PYTHON, "manage.py", "runserver", *args]
     run_command(cmd, cwd=PY_DIR, env_updates=envs, wait=wait)
 
 def run_ts(args, envs, wait=True):
-    forward_args = f"-- {' '.join(args)}" if args else ""
-    cmd = f"pnpm dev {forward_args}"
+    cmd = ["npm", "run", "dev", *(["--", *args] if args else [])]
     run_command(cmd, cwd=TS_DIR, env_updates=envs, wait=wait)
 
 def run_parallel(args, envs):
@@ -107,6 +106,10 @@ def main():
             envs[key] = val
         else:
             forward_args.append(item)
+
+    if task in ("py", "parallel"):
+        envs.setdefault("DJANGO_DEBUG", "true")
+        envs.setdefault("DJANGO_CORS_ALLOWED_ORIGINS", "http://localhost:3000")
 
     if task == "setup":
         setup()
