@@ -57,8 +57,16 @@ def run_py(args, envs, wait=True):
     cmd = [VENV_PYTHON, "manage.py", "runserver", *args]
     run_command(cmd, cwd=PY_DIR, env_updates=envs, wait=wait)
 
+def run_manage(args, envs, wait=True):
+    cmd = [VENV_PYTHON, "manage.py", *args]
+    run_command(cmd, cwd=PY_DIR, env_updates=envs, wait=wait)
+
 def run_ts(args, envs, wait=True):
     cmd = ["npm", "run", "dev", *(["--", *args] if args else [])]
+    run_command(cmd, cwd=TS_DIR, env_updates=envs, wait=wait)
+
+def run_npm(args, envs, wait=True):
+    cmd = ["npm", *args]
     run_command(cmd, cwd=TS_DIR, env_updates=envs, wait=wait)
 
 def run_parallel(args, envs):
@@ -91,7 +99,7 @@ def run_parallel(args, envs):
 # --- CLI Parser ---
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python run.py [setup | py | ts | parallel] [KEY=VALUE ...] [--args...]")
+        print("Usage: python run.py [setup | py | manage | ts | npm | parallel] [KEY=VALUE ...] [--args...]")
         sys.exit(1)
         
     task = sys.argv[1]
@@ -107,7 +115,7 @@ def main():
         else:
             forward_args.append(item)
 
-    if task in ("py", "parallel"):
+    if task in ("py", "manage", "parallel"):
         envs.setdefault("DJANGO_DEBUG", "true")
         envs.setdefault("DJANGO_CORS_ALLOWED_ORIGINS", "http://localhost:3000")
 
@@ -115,12 +123,16 @@ def main():
         setup()
     elif task == "py":
         run_py(forward_args, envs)
+    elif task == "manage":
+        run_manage(forward_args, envs)
     elif task == "ts":
         run_ts(forward_args, envs)
+    elif task == "npm":
+        run_npm(forward_args, envs)
     elif task == "parallel":
         run_parallel(forward_args, envs)
     else:
-        print(f"Unknown task: {task}. Choose from setup, py, ts, parallel.")
+        print(f"Unknown task: {task}. Choose from setup, py, manage, ts, npm, parallel.")
         sys.exit(1)
 
 if __name__ == "__main__":
