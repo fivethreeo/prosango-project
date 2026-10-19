@@ -54,7 +54,7 @@ def setup():
     print("\n✅ Setup complete!")
 
 def run_py(args, envs, wait=True):
-    cmd = [VENV_PYTHON, "manage.py", *args]
+    cmd = [VENV_PYTHON, "manage.py", "runserver", *args]
     run_command(cmd, cwd=PY_DIR, env_updates=envs, wait=wait)
 
 def run_ts(args, envs, wait=True):
