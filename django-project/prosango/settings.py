@@ -125,3 +125,10 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+
+# Local overrides (12-factor config lives in local_settings.py)
+try:
+    from .local_settings import *  # noqa: F401,F403
+except ImportError:
+    pass
