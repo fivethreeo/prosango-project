@@ -107,7 +107,7 @@ def run_parallel(args, envs):
     )
     py_thread = threading.Thread(
         target=run_py,
-        args=(["--port", str(django_port), *args], parallel_envs, False),
+        args=([str(django_port), *args], parallel_envs, False),
         daemon=True,
     )
     
