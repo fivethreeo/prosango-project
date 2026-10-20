@@ -1,0 +1,17 @@
+
+.switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1);
+}
+
+.switcher > * {
+  flex-grow: 1;
+  flex-basis: calc(( 30rem - 100%) * 999);
+}
+
+.switcher\:max5 > :nth-last-child(n+ 5),
+.switcher\:max5 > :nth-last-child(n+ 5) ~ * {
+  flex-basis: 100%;
+}
+  

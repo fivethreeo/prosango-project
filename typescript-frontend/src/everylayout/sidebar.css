@@ -1,0 +1,29 @@
+
+.with-sidebar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1);
+  --min-inline-size: 50%;
+}
+
+.with-sidebar\:left > :first-child {
+  flex-grow: 1;
+}
+
+.with-sidebar\:left > :last-child {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-inline-size: var(--min-inline-size, 50%);
+}
+
+
+.with-sidebar\:right > :last-child {
+  flex-grow: 1;
+}
+
+.with-sidebar\:right > first-child {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-inline-size: var(--min-inline-size, 50%);
+}
+  

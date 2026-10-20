@@ -1,0 +1,24 @@
+
+.box {
+  padding: var(--padding, var(--s1));
+  border: 0 solid;
+  outline: var(--border-thin) solid transparent;
+  outline-offset: calc(var(--border-thin) * -1);
+  color: var(--color-dark);
+  background-color: var(--color-light);
+}
+
+.box * {
+  color: inherit;
+}
+
+.box\:invert {
+  color: var(--color-light);
+  background-color: var(--color-dark);
+}
+
+.box\:border {
+  outline: initial;
+  border: var(--border-thin) solid;
+}
+
