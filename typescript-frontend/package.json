@@ -10,7 +10,9 @@
   },
   "devDependencies": {
     "@rsbuild/core": "^2.2.14",
+    "@rsbuild/plugin-sass": "^2.0.1",
     "@types/node": "^24.19.2",
+    "sass": "^1.105.2",
     "typescript": "^6.0.3"
   }
 }

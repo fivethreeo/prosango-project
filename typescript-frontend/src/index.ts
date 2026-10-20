@@ -1,4 +1,4 @@
-import './index.css';
+import './index.scss';
 
 const rootEl = document.querySelector('#root');
 if (rootEl) {
