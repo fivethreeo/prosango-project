@@ -15,7 +15,6 @@
 .cover_indgedienser::after {
     content: "";
     position: absolute; 
-    background-image: url("/static/indgedienser.jpg");
     filter: sepia(70%);
     top: 0;
     left: 0;
