@@ -79,6 +79,10 @@ def run_parallel(args, envs):
     if not host:
         raise SystemExit("❌ HOST must not be empty.")
     url_host = f"[{host}]" if ":" in host else host
+    public_host = envs.get("PUBLIC_HOST", host).strip("[]")
+    if not public_host:
+        raise SystemExit("❌ PUBLIC_HOST must not be empty.")
+    public_url_host = f"[{public_host}]" if ":" in public_host else public_host
 
     try:
         django_port = int(django_port)
@@ -102,7 +106,9 @@ def run_parallel(args, envs):
         )
 
     parallel_envs = envs.copy()
-    parallel_envs.setdefault("RSBUILD_BASE_URL", f"http://{url_host}:{rsbuild_port}")
+    parallel_envs.setdefault("RSBUILD_BASE_URL", f"http://{public_url_host}:{rsbuild_port}")
+    parallel_envs.setdefault("RSBUILD_CORS_ORIGIN", f"http://{public_url_host}:{django_port}")
+    parallel_envs.setdefault("RSBUILD_HMR_HOST", public_host)
     
     # Target threads to execute tasks concurrently
     ts_thread = threading.Thread(
@@ -156,7 +162,11 @@ def main():
 
     if task in ("py", "manage", "parallel"):
         envs.setdefault("DJANGO_DEBUG", "true")
-        cors_host = envs.get("HOST", "127.0.0.1").strip("[]") if task == "parallel" else "localhost"
+        cors_host = (
+            envs.get("PUBLIC_HOST", envs.get("HOST", "127.0.0.1")).strip("[]")
+            if task == "parallel"
+            else "localhost"
+        )
         if ":" in cors_host:
             cors_host = f"[{cors_host}]"
         envs.setdefault(

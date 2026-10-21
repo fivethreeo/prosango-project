@@ -18,8 +18,8 @@ if (rootEl) {
       <main>
         <section class="hero container">
           <div class="hero-copy stack">
-            <p class="eyebrow">Care, in flow</p>
-            <h1>Make every moment of care feel considered.</h1>
+            <p class="eyebrow">Care, in motion</p>
+            <h1>Make every moment of care feel considered</h1>
             <p class="hero-intro">
               Prosango brings people, plans, and progress into one calm place
               so teams can spend more time on what matters.

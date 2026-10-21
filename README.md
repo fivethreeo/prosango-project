@@ -9,5 +9,15 @@ host and ports with `HOST`, `DJANGO_PORT`, and `RSBUILD_PORT`, for example:
 python run.py parallel HOST=0.0.0.0 DJANGO_PORT=8001 RSBUILD_PORT=3001
 ```
 
-The ports must be different. In parallel mode, use these variables instead of
-passing shared `--host`, `--port`, or `--addrport` arguments.
+The ports must be different. `HOST` controls where both servers listen; use
+`PUBLIC_HOST` when it differs from the address opened in a browser. For
+example, to bind on all interfaces while accessing the application from the
+local network:
+
+```sh
+python run.py parallel HOST=0.0.0.0 PUBLIC_HOST=192.168.1.2
+```
+
+`PUBLIC_HOST` is used for Django and Rsbuild CORS, Rsbuild asset URLs, and the
+HMR WebSocket. In parallel mode, use these variables instead of passing shared
+`--host`, `--port`, or `--addrport` arguments.

@@ -12,6 +12,12 @@ def _load_manifest():
         return json.load(f)
 
 
+def _asset_url(base, path):
+    if path.startswith(('http://', 'https://')):
+        return path
+    return f'{base}{path}'
+
+
 @register.simple_tag
 def rsbuild_entry(name='index'):
     """Render CSS and JS tags for an Rsbuild entry, read from manifest.json.
@@ -28,9 +34,9 @@ def rsbuild_entry(name='index'):
         ) from e
     base = settings.RSBUILD_BASE_URL.rstrip('/')
     css = format_html_join(
-        '', '<link rel="stylesheet" href="{}{}">', ((base, p) for p in initial.get('css', []))
+        '', '<link rel="stylesheet" href="{}">', ((_asset_url(base, p),) for p in initial.get('css', []))
     )
     js = format_html_join(
-        '', '<script defer src="{}{}"></script>', ((base, p) for p in initial.get('js', []))
+        '', '<script defer src="{}"></script>', ((_asset_url(base, p),) for p in initial.get('js', []))
     )
     return format_html('{}{}', css, js)
