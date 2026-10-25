@@ -18,6 +18,17 @@ local network:
 python run.py parallel HOST=0.0.0.0 PUBLIC_HOST=192.168.1.2
 ```
 
-`PUBLIC_HOST` is used for Django and Rsbuild CORS, Rsbuild asset URLs, and the
-HMR WebSocket. In parallel mode, use these variables instead of passing shared
-`--host`, `--port`, or `--addrport` arguments.
+`PUBLIC_HOST` is used for Rsbuild asset URLs and the HMR WebSocket. CORS is
+disabled by default in development. Enable it independently when needed:
+
+```sh
+# Permit requests to Django from an Rsbuild origin.
+python run.py parallel DJANGO_CORS_ALLOWED_ORIGINS=http://localhost:3000
+
+# Permit Django-served pages to load Rsbuild assets cross-origin.
+python run.py parallel RSBUILD_CORS_ORIGIN=http://localhost:8000
+```
+
+Set both variables when both directions require CORS. In parallel mode, use
+these variables instead of passing shared `--host`, `--port`, or `--addrport`
+arguments.

@@ -16,6 +16,8 @@ def env_list(name, default=''):
 
 
 DEBUG = env_bool('DJANGO_DEBUG', True)
+if DEBUG:
+    SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 if SECRET_KEY is None:
@@ -37,7 +39,7 @@ if os.environ.get('DATABASE_NAME'):
         }
     }
 
-CORS_ALLOWED_ORIGINS = env_list('DJANGO_CORS_ALLOWED_ORIGINS', 'http://localhost:3000' if DEBUG else '')
+CORS_ALLOWED_ORIGINS = env_list('DJANGO_CORS_ALLOWED_ORIGINS')
 CORS_ALLOW_CREDENTIALS = env_bool('DJANGO_CORS_ALLOW_CREDENTIALS', False)
 
 # In dev, assets are served by the Rsbuild dev server; the manifest is still used
@@ -52,4 +54,10 @@ if _static_root:
 if not DEBUG:
     from pathlib import Path
 
-    RSBUILD_MANIFEST = os.environ.get('RSBUILD_MANIFEST') or Path(STATIC_ROOT) / 'manifest.json'
+    static_root = Path(
+        os.environ.get(
+            'DJANGO_STATIC_ROOT',
+            Path(__file__).resolve().parent.parent / 'staticfiles',
+        )
+    )
+    RSBUILD_MANIFEST = os.environ.get('RSBUILD_MANIFEST') or static_root / 'manifest.json'

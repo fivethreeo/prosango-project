@@ -1,12 +1,14 @@
-{% load rsbuild %}<!doctype html>
+{% load rsbuild static %}<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Prosango</title>
+  <link rel="icon" href="{% static 'favicon.ico' %}">
+  <link rel="icon" type="image/png" href="{% static 'favicon.png' %}">
   {% rsbuild_entry 'index' %}
 </head>
 <body>
-  <div id="root"></div>
+  <div id="root" data-favicon-url="{% static 'favicon.png' %}"></div>
 </body>
 </html>

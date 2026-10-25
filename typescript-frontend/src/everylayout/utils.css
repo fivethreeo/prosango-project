@@ -1,24 +1,145 @@
 .jumbotext {
-    font-size: var(--s5);
+    font-size: var(--f5);
 }
 
 .xltext {
-    font-size: var(--s4);
+    font-size: var(--f4);
 }
 
-.cover_indgedienser {
-    padding: 0;
-    position: relative;
-    background-color: transparent;
+.space-s0 {
+    --space: var(--s0);
+}
+.space-s1 {
+    --space: var(--s1);
+}
+.space-s2 {
+    --space: var(--s2);
+}
+.space-s3 {
+    --space: var(--s3);
+}
+.space-s4 {
+    --space: var(--s4);
+}
+.space-s5 {
+    --space: var(--s5);
+}
+.space-s-1 {
+    --space: var(--s-1);
+}
+.space-s-2 {
+    --space: var(--s-2);
+}
+.space-s-3 {
+    --space: var(--s-3);
+}
+.space-s-4 {
+    --space: var(--s-4);
+}
+.space-s-5 {
+    --space: var(--s-5);
 }
 
-.cover_indgedienser::after {
-    content: "";
-    position: absolute; 
-    filter: sepia(70%);
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
+.padding-s0 {
+    --padding: var(--s0);
+}
+.padding-s1 {
+    --padding: var(--s1);
+}
+.padding-s2 {
+    --padding: var(--s2);
+}
+.padding-s3 {
+    --padding: var(--s3);
+}
+.padding-s4 {
+    --padding: var(--s4);
+}
+.padding-s5 {
+    --padding: var(--s5);
+}
+.padding-s-1 {
+    --padding: var(--s-1);
+}
+.padding-s-2 {
+    --padding: var(--s-2);
+}
+.padding-s-3 {
+    --padding: var(--s-3);
+}
+.padding-s-4 {
+    --padding: var(--s-4);
+}
+.padding-s-5 {
+    --padding: var(--s-5);
+}
+
+.gap-s0 {
+    --gap: var(--s0);
+}
+.gap-s1 {
+    --gap: var(--s1);
+}
+.gap-s2 {
+    --gap: var(--s2);
+}
+.gap-s3 {
+    --gap: var(--s3);
+}
+.gap-s4 {
+    --gap: var(--s4);
+}
+.gap-s5 {
+    --gap: var(--s5);
+}
+.gap-s-1 {
+    --gap: var(--s-1);
+}
+.gap-s-2 {
+    --gap: var(--s-2);
+}
+.gap-s-3 {
+    --gap: var(--s-3);
+}
+.gap-s-4 {
+    --gap: var(--s-4);
+}
+.gap-s-5 {
+    --gap: var(--s-5);
+}
+
+.grid-min-12 {
+    --min: 12rem;
+}
+.grid-min-16 {
+    --min: 16rem;
+}
+.grid-min-20 {
+    --min: 20rem;
+}
+.grid-min-24 {
+    --min: 24rem;
+}
+
+.sidebar-width-12 {
+    --sidebar-width: 12rem;
+}
+.sidebar-width-16 {
+    --sidebar-width: 16rem;
+}
+.sidebar-width-20 {
+    --sidebar-width: 20rem;
+}
+.sidebar-width-24 {
+    --sidebar-width: 24rem;
+}
+
+.sidebar-min-50 {
+    --min-inline-size: 50%;
+}
+.sidebar-min-66 {
+    --min-inline-size: 66.667%;
+}
+.sidebar-min-75 {
+    --min-inline-size: 75%;
 }

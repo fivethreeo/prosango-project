@@ -32,9 +32,18 @@
 }
 
 .reel > * + * {
-  margin-inline-start: 1rem;
+  margin-inline-start: var(--gap, var(--s0));
 }
 
 .reel.overflowing {
-  padding-block-end: 1rem;
+  padding-block-end: var(--gap, var(--s0));
+}
+
+.reel.overflowing + .instruction {
+  display: block;
+}
+
+.instruction {
+  margin-block-start: var(--s-2) !important;
+  display: none;
 }

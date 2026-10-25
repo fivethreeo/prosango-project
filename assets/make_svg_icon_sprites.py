@@ -3,6 +3,7 @@
 import argparse
 import copy
 from pathlib import Path
+import re
 import subprocess
 import tempfile
 import xml.etree.ElementTree as ET
@@ -80,6 +81,8 @@ def _guide_rectangles(root, layer_id):
         rect_id = rect.get("id")
         if not rect_id:
             raise ValueError("Every guide rectangle must have an id.")
+        if re.fullmatch(r"rect\d+", rect_id):
+            continue
 
         x = _number(rect.get("x", "0"), "x", rect_id)
         y = _number(rect.get("y", "0"), "y", rect_id)

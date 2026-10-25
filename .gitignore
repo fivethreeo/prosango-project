@@ -35,3 +35,11 @@ yarn-error.log*
 pnpm-debug.log*
 dist/
 coverage/
+
+# Local Django data
+django-project/db.sqlite3
+django-project/media/
+
+# Local tooling and editor state
+ink.sh
+*.swp

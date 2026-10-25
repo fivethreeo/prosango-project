@@ -9,9 +9,5 @@
 .with-icon {
   display: inline-flex;
   align-items: baseline;
+  gap: var(--gap, var(--s0));
 }
-
-.with-icon .icon {
-  margin-inline-end: 1rem;
-}
-  

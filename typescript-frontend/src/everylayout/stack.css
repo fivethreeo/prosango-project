@@ -10,10 +10,9 @@
 } 
 
 .stack > * + * {
-  margin-block-start: var(--space, --s0);
+  margin-block-start: var(--space, var(--s0));
 }
 
 .stack:only-child {
   block-size: 100%;
 }
-

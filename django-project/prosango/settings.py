@@ -26,6 +26,8 @@ SECRET_KEY = 'django-insecure-(dh=hy0(zcltj*as5p6fl)mvq+l+(d!6plm6_f9t6q&a#ymkjp
 DEBUG = True
 
 ALLOWED_HOSTS = []
+CORS_ALLOWED_ORIGINS = []
+CORS_ALLOW_CREDENTIALS = False
 
 
 # Application definition
@@ -37,13 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders',
+    'easy_thumbnails',
+    'filer',
+    'pages.apps.PagesConfig',
     'prosango',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -117,9 +120,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Rsbuild (typescript-frontend) manifest; dev reads it from the frontend dist,
 # production reads the copy collected into STATIC_ROOT (see local_settings.py)
@@ -143,3 +148,7 @@ try:
     from .local_settings import *  # noqa: F401,F403
 except ImportError:
     pass
+
+if not DEBUG or CORS_ALLOWED_ORIGINS:
+    INSTALLED_APPS.insert(-1, 'corsheaders')
+    MIDDLEWARE.insert(1, 'corsheaders.middleware.CorsMiddleware')

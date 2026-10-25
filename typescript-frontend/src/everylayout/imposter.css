@@ -1,4 +1,8 @@
 
+.imposter-container {
+  position: relative;
+}
+
 .imposter {
   --position: absolute;
   --margin: 0px;

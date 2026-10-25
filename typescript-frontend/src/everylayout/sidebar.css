@@ -2,11 +2,12 @@
 .with-sidebar {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--s1);
+  gap: var(--gap, var(--s1));
   --min-inline-size: 50%;
 }
 
 .with-sidebar\:left > :first-child {
+  flex-basis: var(--sidebar-width, auto);
   flex-grow: 1;
 }
 
@@ -18,12 +19,12 @@
 
 
 .with-sidebar\:right > :last-child {
+  flex-basis: var(--sidebar-width, auto);
   flex-grow: 1;
 }
 
-.with-sidebar\:right > first-child {
+.with-sidebar\:right > :first-child {
   flex-basis: 0;
   flex-grow: 999;
   min-inline-size: var(--min-inline-size, 50%);
 }
-  

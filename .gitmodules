@@ -1,0 +1,3 @@
+[submodule "typescript-frontend/prosemirror-breadcrumbs"]
+	path = typescript-frontend/prosemirror-breadcrumbs
+	url = git@github.com:fivethreeo/prosemirror-breadcrumbs.git

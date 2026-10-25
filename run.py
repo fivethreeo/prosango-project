@@ -107,7 +107,6 @@ def run_parallel(args, envs):
 
     parallel_envs = envs.copy()
     parallel_envs.setdefault("RSBUILD_BASE_URL", f"http://{public_url_host}:{rsbuild_port}")
-    parallel_envs.setdefault("RSBUILD_CORS_ORIGIN", f"http://{public_url_host}:{django_port}")
     parallel_envs.setdefault("RSBUILD_HMR_HOST", public_host)
     
     # Target threads to execute tasks concurrently
@@ -162,17 +161,6 @@ def main():
 
     if task in ("py", "manage", "parallel"):
         envs.setdefault("DJANGO_DEBUG", "true")
-        cors_host = (
-            envs.get("PUBLIC_HOST", envs.get("HOST", "127.0.0.1")).strip("[]")
-            if task == "parallel"
-            else "localhost"
-        )
-        if ":" in cors_host:
-            cors_host = f"[{cors_host}]"
-        envs.setdefault(
-            "DJANGO_CORS_ALLOWED_ORIGINS",
-            f"http://{cors_host}:{envs.get('RSBUILD_PORT', '3000')}",
-        )
 
     if task == "setup":
         setup()

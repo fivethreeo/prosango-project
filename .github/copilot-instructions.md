@@ -18,5 +18,5 @@
 ## Repository conventions
 
 - Runtime configuration is environment-based in `prosango/local_settings.py`. Use the `DJANGO_*` variables for debug mode, secret key, hosts, database, static root, and CORS settings rather than editing committed settings for deployments. A non-debug process requires `DJANGO_SECRET_KEY`.
-- The launcher defaults `DJANGO_DEBUG=true` and derives `DJANGO_CORS_ALLOWED_ORIGINS` from the Rsbuild public host/port in `parallel` mode. `PUBLIC_HOST` also drives Rsbuild’s asset CORS origin, `RSBUILD_BASE_URL`, and the HMR WebSocket host; keep these values aligned when changing service-host behavior.
+- Development CORS is disabled by default. Django does not load `django-cors-headers` unless `DJANGO_CORS_ALLOWED_ORIGINS` is set; enable Rsbuild asset CORS with `RSBUILD_CORS_ORIGIN`. Set either or both explicitly as needed. `PUBLIC_HOST` drives `RSBUILD_BASE_URL` and the HMR WebSocket host.
 - TypeScript uses native ESM/bundler resolution and treats unused locals and parameters as errors. Keep frontend source under `typescript-frontend/src`; the generated `dist` contents are build output.

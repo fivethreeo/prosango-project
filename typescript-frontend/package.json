@@ -12,7 +12,16 @@
     "@rsbuild/core": "^2.2.14",
     "@rsbuild/plugin-sass": "^2.0.1",
     "@types/node": "^24.19.2",
+    "postcss-prefix-selector": "^2.2.1",
     "sass": "^1.105.2",
     "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "prosemirror-example-setup": "^1.2.3",
+    "prosemirror-model": "^1.25.12",
+    "prosemirror-schema-basic": "^1.2.5",
+    "prosemirror-schema-list": "^1.5.1",
+    "prosemirror-state": "^1.4.4",
+    "prosemirror-view": "^1.42.7"
   }
 }
