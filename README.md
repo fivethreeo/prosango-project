@@ -1,5 +1,17 @@
 # prosango-project
-Repository with Python and TypeScript prosango directory structure
+
+Prosango integrates a TypeScript ProseMirror editor with Django. Content is
+managed through Django and django-admin, with django-filer providing image
+attachments and previews. The editor supports fullscreen editing of Every
+Layout components.
+
+The public application and the editing experience share an Every Layout
+philosophy: compose small, configurable layout primitives instead of building
+one-off page structures. This keeps authored content and the application UI
+consistent while allowing each to use the same Box, Cover, Grid, Sidebar,
+Stack, and related primitives.
+
+## Development
 
 Run the Django and Rsbuild development servers together with `python run.py parallel`.
 They bind to `127.0.0.1` and use ports 8000 and 3000 respectively. Override the
