@@ -4,6 +4,7 @@ import { generateCustomStylingClasses } from './scripts/generate-custom-styling-
 import { pluginDjangoReload } from './scripts/django-reload.mjs';
 
 const assetPrefix = process.env.RSBUILD_BASE_URL;
+const productionAssetPrefix = (assetPrefix || '/static').replace(/\/$/, '');
 const corsOrigin = process.env.RSBUILD_CORS_ORIGIN;
 const hmrHost = process.env.RSBUILD_HMR_HOST;
 
@@ -87,6 +88,7 @@ export default defineConfig(({ env }) => {
         },
       },
       output: {
+        assetPrefix: isDevelopment ? undefined : `${productionAssetPrefix}/editor`,
         distPath: {
           root: 'dist/editor',
         },
@@ -114,6 +116,7 @@ export default defineConfig(({ env }) => {
         },
       },
       output: {
+        assetPrefix: isDevelopment ? undefined : `${productionAssetPrefix}/playground`,
         distPath: {
           root: 'dist/playground',
         },
