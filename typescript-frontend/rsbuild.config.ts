@@ -54,12 +54,24 @@ export default defineConfig(({ env }) => {
   output: {
     manifest: true,
     filenameHash: !isDevelopment,
+    distPath: {
+      js: 'js',
+      jsAsync: 'js',
+      css: 'css',
+      cssAsync: 'css',
+      svg: 'assets',
+      font: 'assets',
+      wasm: 'assets',
+      image: 'assets',
+      media: 'assets',
+      assets: 'assets',
+    },
   },
   splitChunks: isDevelopment ? false : undefined,
   environments: {
     app: {
       output: {
-        copy: [{ from: './src/fonts/OFL.txt', to: 'static/font/Shrikhand-OFL.txt' }],
+        copy: [{ from: './src/fonts/OFL.txt', to: 'assets/Shrikhand-OFL.txt' }],
       },
       source: {
         entry: {
@@ -68,7 +80,7 @@ export default defineConfig(({ env }) => {
       },
       tools: {
         cssExtract: {
-          loaderOptions: { publicPath: '../../' },
+          loaderOptions: { publicPath: '../' },
         },
         rspack: {
           output: {
@@ -104,7 +116,7 @@ export default defineConfig(({ env }) => {
     },
     playground: {
       dev: {
-        // Do not load the app environment's runtime at /static/js/runtime.js.
+        // Do not load the app environment's runtime at /js/runtime.js.
         assetPrefix: environmentAssetPrefix('/playground'),
       },
       html: {
@@ -136,7 +148,7 @@ export default defineConfig(({ env }) => {
       plugins: [customStylingClassListPlugin],
       output: isDevelopment
         ? {
-            chunkFilename: 'static/js/[name].js',
+            chunkFilename: 'js/[name].js',
           }
         : undefined,
       optimization: {
